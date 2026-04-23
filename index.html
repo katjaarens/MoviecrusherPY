@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MovieCrusher PyScript</title>
+
+    <!-- PyScript -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2023.11.2/core.css">
+    <script type="module" src="https://pyscript.net/releases/2023.11.2/core.js"></script>
+
+    <!-- SQLite WASM -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+
+<body>
+
+<h1>MovieCrusher – PyScript Version</h1>
+
+<div id="output"></div>
+
+<py-script src="main.py"></py-script>
+
+<script>
+let db;
+
+initSqlJs().then(SQL => {
+    db = new SQL.Database();
+
+    // Tabellen anlegen
+    db.run(`
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            alter_ INTEGER NOT NULL
+        );
+    `);
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS movies (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            genre TEXT NOT NULL,
+            release_year INTEGER NOT NULL,
+            shorty TEXT
+        );
+    `);
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS ratings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            movie_id INTEGER NOT NULL,
+            rating REAL NOT NULL
+        );
+    `);
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS watchlist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            movie_id INTEGER NOT NULL
+        );
+    `);
+
+    console.log("SQLite DB ready");
+});
+</script>
+
+</body>
+</html>
