@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>MovieCrusher PyScript</title>
+    <title>MovieCrusher – PyScript Version</title>
 
     <!-- PyScript -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2023.11.2/core.css">
@@ -16,13 +16,12 @@
 
 <h1>MovieCrusher – PyScript Version</h1>
 
-<div id="output"></div>
-
-<py-script src="main.py"></py-script>
+<div id="output">Lade Datenbank…</div>
 
 <script>
 let db;
 
+// sql.js laden und DB initialisieren
 initSqlJs().then(SQL => {
     db = new SQL.Database();
 
@@ -63,7 +62,12 @@ initSqlJs().then(SQL => {
         );
     `);
 
-    console.log("SQLite DB ready");
+    document.getElementById("output").innerHTML = "Datenbank geladen. Starte PyScript…";
+
+    // Jetzt erst PyScript starten
+    const pys = document.createElement("py-script");
+    pys.setAttribute("src", "main.py");
+    document.body.appendChild(pys);
 });
 </script>
 
